@@ -33,11 +33,19 @@
   <link href="https://fonts.googleapis.com/css?family=Miriam+Libre" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+
   <style>
     #progressBg, #progressFg {
       width: 100%;
-      height: 4px;
+      height: 28px;
       position: fixed;
+    }
+
+    #progressText {
+      color: white;
+      position: fixed;
+      margin: 3px 12px;
+      height: 22px;
     }
 
     #progressBg {
@@ -52,7 +60,7 @@
 	    -webkit-transition: width .25s;
     }
 
-    #questions {
+    #questions, #results {
       margin-top: calc(5vh + 50px);
     }
 
@@ -67,15 +75,15 @@
 </head>
 <body>
   <header>
-    <h1>Greed Detector</h1>
-    <p>Estimated greed:</p>
+    <h1>Are you greedy?</h1>
   </header>
-  <div>
+  <div id="greedEstimate">
     <div id="progressBg"></div>
     <div id="progressFg"></div>
+    <p id="progressText">Estimated greed: <span id="progressTextPercent">50%</span></p>
   </div>
   <main>
-    <div id="questions">
+    <div id="questions" style="display: block;">
       <h2 id="question">Question</h2>
       <form id="answers" action="">
         <p>
@@ -87,32 +95,179 @@
           <label for="1">Answer</label>
         </p>
       </form>
-      <button id="next">NEXT</button>
+      <button id="next" onclick="nextQuestion();">NEXT</button>
     </div>
-    <div id="results">
+    <div id="results" style="display: none;">
+      <h1>Results</h1>
+      <h2 id="greedyboii">I think that you are hot dogs, not legs.</h2>
+      <p>
+        You scored a greed rating of <span id="rating">9000</span> out of <span id="totalRating">over 9000</span>,
+        or <span id="percentRating">infinite percent</span> greediness. Higher scores are worse. Unless you're a
+        horrible person, in which case they're better... for you.
+      </p>
+      <p>Here is a list of the questions and how they affected your greed rating:</p>
+      <div id="greedQuestions"></div>
     </div>
   </main>
   <script src="js/game.js"></script>
   <script type="text/javascript">
+  var greedEstimate = document.getElementById("greedEstimate");
+  var greedProgress = document.getElementById("progressFg");
+  var greedPercentProgress = document.getElementById("progressTextPercent");
+  var questionContainer = document.getElementById("questions");
+  var questionName = document.getElementById("question");
+  var answerContainer = document.getElementById("answers");
+  var nextButton = document.getElementById("next");
+  var resultContainer = document.getElementById("results");
+  var greedName = document.getElementById("greedyboii");
+  var greedRating = document.getElementById("rating");
+  var greedTotalRating = document.getElementById("totalRating");
+  var greedPercentRating = document.getElementById("percentRating");
+  var greedQuestions = document.getElementById("greedQuestions");
+
   var questions = [
     {
       "name": "Are you greedy?",
       "options": [
         {
           "name": "Yes",
-          "weight": 1,
           "value": 0
         },
         {
-          "name": "No".
-          "weight": 1,
+          "name": "No",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "Are you greedy 2?",
+      "options": [
+        {
+          "name": "Yes",
+          "value": 0
+        },
+        {
+          "name": "No",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "Are you greedy 13854y?",
+      "options": [
+        {
+          "name": "Yes",
+          "value": 0
+        },
+        {
+          "name": "No",
           "value": 1
         }
       ]
     }
   ];
 
+  var greed = 0;
+  var fakeGreed = 0;
+  var totalGreed = 0;
+  var question;
+  var answer;
 
+  function getMaxQuestionGreed(question) {
+    var value = 0;
+    for (var i = 0; i < question.options.length; i++) {
+      if (Math.abs(question.options[i].value) > value)
+        value = Math.abs(question.options[i].value);
+    }
+
+    return value;
+  }
+
+  function nextQuestion() {
+    if (question && answer) {
+      greed += answer.value;
+      fakeGreed -= answer.value;
+      answer.selected = true;
+      answer = null;
+      var index = questions.indexOf(question) + 1;
+      if (index < questions.length)
+        setQuestion(questions[index]);
+      else {
+        question = null;
+        greedRating.innerHTML = greed;
+        greedPercentRating.innerHTML = Math.round((greed / totalGreed) * 100) + "%";
+
+        if (greed > totalGreed / 2) {
+          greedName.innerHTML = "Ha! Your plans have been foiled, you slave to the unpleasant habitual avarice of humanity.";
+        } else {
+          greedName.innerHTML = "Believe it or not, you\'re not actually that greedy. I know, weird, right? It\'s almost like you\'re a decent person or something.";
+        }
+
+        var questionsHTML = "";
+        for (var i = 0; i < questions.length; i++) {
+          var answersHTML = "";
+          for (var i2 = 0; i2 < questions[i].options.length; i2++) {
+            if (questions[i].options[i2].selected) {
+              if (questions[i].options[i2].value != 0) {
+                answersHTML += "<li>" + questions[i].options[i2].name + " - " + (questions[i].options[i2].value > 0 ? "raised" : "lowered") + " your score by " + Math.abs(questions[i].options[i2].value) + "</li>";
+              } else {
+                answersHTML += "<li>" + questions[i].options[i2].name + " - didn\'t affect your score</li>";
+              }
+            } else answersHTML += "<li>" + questions[i].options[i2].name + "</li>";
+          }
+          questionsHTML += "<h4>" + questions[i].name + "</h4><ul>" + answersHTML + "</ul><br>";
+        }
+        greedQuestions.innerHTML = questionsHTML;
+
+        questionContainer.style.display = "none";
+        greedEstimate.style.display = "none";
+        resultContainer.style.display = "block";
+      }
+    } else if (!answer) {
+      setQuestion(questions[0]);
+    }
+  }
+
+  function setQuestion(question) {
+    this.question = question;
+    questionName.innerHTML = question.name;
+    var answers = "";
+    for (var i = 0; i < question.options.length; i++) {
+      answers += getAnswerHTML(question.options[i].name);
+    }
+    answerContainer.innerHTML = answers;
+  }
+
+  function getAnswer(name) {
+    if (question) {
+      for (var i = 0; i < question.options.length; i++) {
+        if (question.options[i].name == name)
+          return question.options[i];
+      }
+    }
+  }
+
+  function getAnswerHTML(name) {
+    return "<p onclick=\"setAnswer(\'" + name + "\');\"><input id=\"" + name + "\" type=\"radio\" name=\"answer\"></input><label for=\"" + name + "\">" + name + "</label></p>";
+  }
+
+  function setAnswer(name) {
+    answer = getAnswer(name);
+    onGreedChange(fakeGreed - answer.value);
+  }
+
+  function onGreedChange(greed) {
+    var percent = ((totalGreed + greed) / (2 * totalGreed)) * 100;
+    greedProgress.style.width = percent + "%";
+    greedPercentProgress.innerHTML = Math.round(percent) + "%";
+  }
+
+  for (var i = 0; i < questions.length; i++) {
+    totalGreed += getMaxQuestionGreed(questions[i]);
+  }
+  greedTotalRating.innerHTML = totalGreed;
+  nextQuestion();
+  onGreedChange(fakeGreed);
   </script>
 </body>
 </html>
