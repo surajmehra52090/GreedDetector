@@ -33,7 +33,86 @@
   <link href="https://fonts.googleapis.com/css?family=Miriam+Libre" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+  <style>
+    #progressBg, #progressFg {
+      width: 100%;
+      height: 4px;
+      position: fixed;
+    }
+
+    #progressBg {
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+
+    #progressFg {
+      background-color: #2962FF;
+      width: 0px;
+      transition: width .25s;
+	    -moz-transition: width .25s;
+	    -webkit-transition: width .25s;
+    }
+
+    #questions {
+      margin-top: calc(5vh + 50px);
+    }
+
+    #questions>form {
+      padding: 8px 0;
+    }
+
+    #questions>button {
+      float: right;
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>Greed Detector</h1>
+    <p>Estimated greed:</p>
+  </header>
+  <div>
+    <div id="progressBg"></div>
+    <div id="progressFg"></div>
+  </div>
+  <main>
+    <div id="questions">
+      <h2 id="question">Question</h2>
+      <form id="answers" action="">
+        <p>
+          <input id="0" type="radio" name="answer">
+          <label for="0">Answer</label>
+        </p>
+        <p>
+          <input id="1" type="radio" name="answer">
+          <label for="1">Answer</label>
+        </p>
+      </form>
+      <button id="next">NEXT</button>
+    </div>
+    <div id="results">
+    </div>
+  </main>
+  <script src="js/game.js"></script>
+  <script type="text/javascript">
+  var questions = [
+    {
+      "name": "Are you greedy?",
+      "options": [
+        {
+          "name": "Yes",
+          "weight": 1,
+          "value": 0
+        },
+        {
+          "name": "No".
+          "weight": 1,
+          "value": 1
+        }
+      ]
+    }
+  ];
+
+
+  </script>
 </body>
 </html>
