@@ -1,13 +1,17 @@
 * {
   font-family: 'Miriam Libre', monospace;
-	animation-name: fadeIn;
-	animation-duration: .3s;
-	animation-timing-function: ease-out;
+  animation-name: fadeIn;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
 }
 
 @keyframes fadeIn {
-	from {opacity: 0;}
-	to {opacity: 1;}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 body {
@@ -28,7 +32,6 @@ button {
   font-weight: bold;
   color: #2962FF;
   margin: 12px 0;
-
   transition: background-color .25s, color .25s;
   -moz-transition: background-color .25s, color .25s;
   -webkit-transition: background-color .25s, color .25s;
@@ -40,50 +43,50 @@ button:hover {
 }
 
 [type="radio"]:checked, [type="radio"]:not(:checked) {
-    position: absolute;
-    left: -999px;
+  position: absolute;
+  left: -999px;
 }
 
-[type="radio"]:checked + label, [type="radio"]:not(:checked) + label {
-    position: relative;
-    padding-left: 28px;
-    cursor: pointer;
-    line-height: 20px;
-    display: inline-block;
+[type="radio"]:checked+label, [type="radio"]:not(:checked)+label {
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  line-height: 20px;
+  display: inline-block;
 }
 
-[type="radio"]:checked + label:before, [type="radio"]:not(:checked) + label:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 18px;
-    height: 18px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 100%;
-    background: #fff;
+[type="radio"]:checked+label:before, [type="radio"]:not(:checked)+label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 100%;
+  background: #fff;
 }
 
-[type="radio"]:checked + label:after, [type="radio"]:not(:checked) + label:after {
-    content: '';
-    width: 12px;
-    height: 12px;
-    background: #2962FF;
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    border-radius: 100%;
-    transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -webkit-transition: all 0.2s ease;
+[type="radio"]:checked+label:after, [type="radio"]:not(:checked)+label:after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: #2962FF;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  border-radius: 100%;
+  transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
 }
 
-[type="radio"]:not(:checked) + label:after {
-    opacity: 0;
-    transform: scale(0);
+[type="radio"]:not(:checked)+label:after {
+  opacity: 0;
+  transform: scale(0);
 }
 
-[type="radio"]:checked + label:after {
-    opacity: 1;
-    transform: scale(1);
+[type="radio"]:checked+label:after {
+  opacity: 1;
+  transform: scale(1);
 }
