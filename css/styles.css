@@ -28,6 +28,7 @@ header, main {
 
 a {
   color: #00C853;
+  font-weight: bold;
   transition: color .25s;
   -moz-transition: color .25s;
   -webkit-transition: color .25s;
