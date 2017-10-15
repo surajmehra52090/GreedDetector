@@ -24,22 +24,23 @@ header, main {
 }
 
 button {
-  border: 2px solid #2962FF;
+  border: 2px solid #00C853;
   height: 50px;
   border-radius: 25px;
   padding: 0 50px;
   background-color: rgba(0, 0, 0, 0);
   font-weight: bold;
-  color: #2962FF;
+  color: #00C853;
   margin: 12px 0;
-  transition: background-color .25s, color .25s;
-  -moz-transition: background-color .25s, color .25s;
-  -webkit-transition: background-color .25s, color .25s;
+  transition: all .25s;
+  -moz-transition: all .25s;
+  -webkit-transition: all .25s;
 }
 
 button:hover {
-  background-color: #2962FF;
-  color: white;
+  background-color: #00E676;
+  color: #FFFFFF;
+  border-color: #00E676;
 }
 
 [type="radio"]:checked, [type="radio"]:not(:checked) {
@@ -71,7 +72,7 @@ button:hover {
   content: '';
   width: 12px;
   height: 12px;
-  background: #2962FF;
+  background: #00E676;
   position: absolute;
   top: 4px;
   left: 4px;
