@@ -119,3 +119,9 @@ button:hover {
 .smalltext {
   font-size: 0.8em;
 }
+
+.horizontal {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
