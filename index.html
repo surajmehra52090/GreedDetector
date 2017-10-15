@@ -112,6 +112,7 @@
       <div class="horizontal">
         <div id="greedyCatsChart" class="chart noanim"></div>
         <div id="greedyDogsChart" class="chart noanim"></div>
+        <div id="greedySweetChart" class="chart noanim"></div>
       </div>
       <p>Here is a list of the questions and how they affected your greed rating:</p>
       <div id="greedQuestions"></div>
@@ -136,6 +137,7 @@
   var greedQuestions = document.getElementById("greedQuestions");
   var greedyCatsChart = document.getElementById("greedyCatsChart");
   var greedyDogsChart = document.getElementById("greedyDogsChart");
+  var greedySweetChart = document.getElementById("greedySweetChart");
 
   google.charts.load('current', {'packages':['corechart']});
 
@@ -183,9 +185,11 @@
         } else answersHTML += "<li>" + questions[i].options[i2].name + "</li>";
       }
       questionsHTML += "<div class=\"stat\">";
-      questionsHTML += "<h4>" + questions[i].name + "</h4><ul>" + answersHTML + "</ul>";
+      questionsHTML += "<div style=\"display: inline-block; vertical-align: top;\"><h4>" + questions[i].name + "</h4><ul>" + answersHTML + "</ul>";
       if (questions[i].why)
         questionsHTML += "<a onclick=\"document.getElementById(\'why" + questions[i].id + "\').style.display = \'block\';\">Why ask this question?</a><p id=\"why" + questions[i].id + "\" style=\"display: none;\" class=\"smalltext\">" + questions[i].why + "</p>";
+      questionsHTML += "</div>";
+      questionsHTML += "<div id=\"chart" + questions[i].id + "\" class=\"answerchart\"></div>"
       questionsHTML += "</div>";
     }
     greedQuestions.innerHTML = questionsHTML;
@@ -196,12 +200,14 @@
 
     var items = saveResult();
     if (items) {
-      addGreedyPreferenceChart(items, "dogsVsCats", "Cats", greedyCatsChart);
-      addGreedyPreferenceChart(items, "dogsVsCats", "Dogs", greedyDogsChart);
+      addGreedyPreferenceChart(items, "dogsVsCats", "Cats", null, greedyCatsChart);
+      addGreedyPreferenceChart(items, "dogsVsCats", "Dogs", null, greedyDogsChart);
+      addGreedyPreferenceChart(items, "sweetVsSavoury", "Sweet", "sweet things", greedySweetChart);
+      setupQuestionCharts();
     }
   }
 
-  function addGreedyPreferenceChart(items, questionId, optionName, element) {
+  function addGreedyPreferenceChart(items, questionId, optionName, displayOptionName, element) {
     var greedy = 0;
     var notGreedy = 0;
     for (var i = 0; i < items.length; i++) {
@@ -212,18 +218,59 @@
       }
     }
 
+    if (!displayOptionName)
+      displayOptionName = optionName.toLowerCase();
+
     new google.visualization.PieChart(element).draw(
       google.visualization.arrayToDataTable([
-        ['Task', 'People That Like ' + optionName],
+        ['Greediness', 'People That Like ' + optionName],
         ['Greedy', greedy],
         ['Not Greedy', notGreedy]
       ]),
       {
-        "title": "Are people that like " + optionName.toLowerCase() + " greedy?",
+        "title": Math.random() > 0.5 ? "Are people that like " + displayOptionName + " greedy?" : "Do greedy people like " + displayOptionName + "?",
         "width": 500,
         "height": 400
       }
     );
+  }
+
+  function setupQuestionCharts() {
+    if (typeof(Storage) !== "undefined" && localStorage) {
+      var items = JSON.parse(localStorage.getItem("items"));
+      for (var i = 0; i < questions.length; i++) {
+        console.log(i);
+        var chart = document.getElementById("chart" + questions[i].id);
+        console.log(chart);
+        var data = [
+          ['Answer', 'Choices']
+        ];
+
+        console.log(data);
+
+        for (var i2 = 0; i2 < questions[i].options.length; i2++) {
+          var choices = 0;
+          for (var i3 = 0; i3 < items.length; i3++) {
+            if (getOptionByName(getQuestionById(items[i3].questions, questions[i].id).options, questions[i].options[i2].name).selected)
+              choices++;
+          }
+
+          data.push([questions[i].options[i2].name, choices]);
+        }
+
+        console.log(data);
+
+        new google.visualization.BarChart(chart).draw(
+          google.visualization.arrayToDataTable(data),
+          {
+            "title": "Common Answer Choices",
+            "width": 500,
+            "height": 400,
+            "legend": { "position": "none" }
+          }
+        )
+      }
+    }
   }
 
   /*function addPreferenceGreedyChart(items, questionId, element) {

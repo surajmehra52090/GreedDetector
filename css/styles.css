@@ -125,3 +125,7 @@ button:hover {
   overflow-y: hidden;
   white-space: nowrap;
 }
+
+.answerchart {
+  display: inline-block;
+}
