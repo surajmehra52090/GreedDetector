@@ -109,9 +109,16 @@
       </p>
       <p>Here is a list of the questions and how they affected your greed rating:</p>
       <div id="greedQuestions"></div>
+      <br>
+      <h2>Statistics</h2>
+      <p>These are a few statistics showing general trends among people that have taken this quiz so far.</p>
+      <div id="greedyCatsChart" class="chart noanim"></div>
+      <div id="greedyDogsChart" class="chart noanim"></div>
     </div>
   </main>
+
   <script src="js/game.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
   var greedEstimate = document.getElementById("greedEstimate");
   var greedProgress = document.getElementById("progressFg");
@@ -126,128 +133,10 @@
   var greedTotalRating = document.getElementById("totalRating");
   var greedPercentRating = document.getElementById("percentRating");
   var greedQuestions = document.getElementById("greedQuestions");
+  var greedyCatsChart = document.getElementById("greedyCatsChart");
+  var greedyDogsChart = document.getElementById("greedyDogsChart");
 
-  var questions = [
-    {
-      "id": "greed",
-      "name": "Do you think that you are greedy?",
-      "options": [
-        {
-          "name": "Yes",
-          "value": 0
-        },
-        {
-          "name": "No",
-          "value": 1
-        }
-      ],
-      "why": "This attempts to catch people lying by asking a seemingly simple question. If you answered no to this, you were lying; everyone is greedy to some extent, whether by standing in the middle of the hallway talking to friends or just using too much oxygen."
-    },
-    {
-      "id": "dogsVsCats",
-      "name": "Dogs or cats?",
-      "options": [
-        {
-          "name": "Dogs",
-          "value": 0
-        },
-        {
-          "name": "Cats",
-          "value": 0
-        }
-      ]
-    },
-    {
-      "id": "greed2",
-      "name": "Are you greedy 13854y?",
-      "options": [
-        {
-          "name": "Yes",
-          "value": 0
-        },
-        {
-          "name": "No",
-          "value": 1
-        }
-      ],
-      "why": "none"
-    }
-  ];
-
-  var stats = [
-    {
-      "id": "greed/dogsVsCats",
-      "comparator": "greed",
-      "comparison": "dogsVsCats"
-    }
-  ];
-
-  var greed = 0;
-  var fakeGreed = 0;
-  var totalGreed = 0;
-  var question;
-  var answer;
-
-  function getMaxQuestionGreed(question) {
-    var value = 0;
-    for (var i = 0; i < question.options.length; i++) {
-      if (Math.abs(question.options[i].value) > value)
-        value = Math.abs(question.options[i].value);
-    }
-
-    return value;
-  }
-
-  function nextQuestion() {
-    if (question && answer) {
-      greed += answer.value;
-      fakeGreed -= answer.value;
-      answer.selected = true;
-      answer = null;
-      var index = questions.indexOf(question) + 1;
-      if (index < questions.length)
-        setQuestion(questions[index]);
-      else {
-        question = null;
-        greedRating.innerHTML = totalGreed + greed;
-        greedPercentRating.innerHTML = Math.round(((totalGreed + greed) / (2 * totalGreed)) * 100) + "%";
-
-        if (greed > 0) {
-          greedName.innerHTML = "Ha! Your plans have been foiled, you slave to the unpleasant habitual avarice of humanity.";
-        } else {
-          greedName.innerHTML = "Believe it or not, you aren\'t actually that greedy. I know, weird, right? It\'s almost like you\'re a decent person or something.";
-        }
-
-        var questionsHTML = "";
-        for (var i = 0; i < questions.length; i++) {
-          var answersHTML = "";
-          for (var i2 = 0; i2 < questions[i].options.length; i2++) {
-            if (questions[i].options[i2].selected) {
-              if (questions[i].options[i2].value != 0) {
-                answersHTML += "<li>" + questions[i].options[i2].name + " - " + (questions[i].options[i2].value > 0 ? "increased" : "decreased") + " your greediness by " + Math.abs(questions[i].options[i2].value) + "</li>";
-              } else {
-                answersHTML += "<li>" + questions[i].options[i2].name + " - didn\'t affect your score</li>";
-              }
-            } else answersHTML += "<li>" + questions[i].options[i2].name + "</li>";
-          }
-          questionsHTML += "<div class=\"stat\">";
-          questionsHTML += "<h4>" + questions[i].name + "</h4><ul>" + answersHTML + "</ul>";
-          if (questions[i].why)
-            questionsHTML += "<a onclick=\"document.getElementById(\'why" + questions[i].id + "\').style.display = \'block\';\">Why ask this question?</a><p id=\"why" + questions[i].id + "\" style=\"display: none;\" class=\"smalltext\">" + questions[i].why + "</p>";
-          questionsHTML += "</div>";
-        }
-        greedQuestions.innerHTML = questionsHTML;
-
-        questionContainer.style.display = "none";
-        greedEstimate.style.display = "none";
-        resultContainer.style.display = "block";
-
-        saveResult();
-      }
-    } else if (!answer) {
-      setQuestion(questions[0]);
-    }
-  }
+  google.charts.load('current', {'packages':['corechart']});
 
   function setQuestion(question) {
     this.question = question;
@@ -259,22 +148,8 @@
     answerContainer.innerHTML = answers;
   }
 
-  function getAnswer(name) {
-    if (question) {
-      for (var i = 0; i < question.options.length; i++) {
-        if (question.options[i].name == name)
-          return question.options[i];
-      }
-    }
-  }
-
   function getAnswerHTML(name) {
     return "<p onclick=\"setAnswer(\'" + name + "\');\"><input id=\"" + name + "\" type=\"radio\" name=\"answer\"></input><label for=\"" + name + "\">" + name + "</label></p>";
-  }
-
-  function setAnswer(name) {
-    answer = getAnswer(name);
-    onGreedChange(fakeGreed - answer.value);
   }
 
   function onGreedChange(greed) {
@@ -283,21 +158,113 @@
     greedPercentProgress.innerHTML = Math.round(percent) + "%";
   }
 
-  function saveResult() {
-    if (typeof(Storage) !== "undefined" && localStorage) {
-      var items = JSON.parse(localStorage.getItem("items"));
-      if (!items) items = [];
-      items.push({
-        "questions": questions,
-        "greed": totalGreed + greed
-      });
-      localStorage.setItem("items", JSON.stringify(items));
+  function onFinish() {
+    question = null;
+    greedRating.innerHTML = totalGreed + greed;
+    greedPercentRating.innerHTML = Math.round(((totalGreed + greed) / (2 * totalGreed)) * 100) + "%";
+
+    if (greed > 0) {
+      greedName.innerHTML = "Ha! Your plans have been foiled, you slave to the unpleasant habitual avarice of humanity.";
+    } else {
+      greedName.innerHTML = "Believe it or not, you aren\'t actually that greedy. I know, weird, right? It\'s almost like you\'re a decent person or something.";
+    }
+
+    var questionsHTML = "";
+    for (var i = 0; i < questions.length; i++) {
+      var answersHTML = "";
+      for (var i2 = 0; i2 < questions[i].options.length; i2++) {
+        if (questions[i].options[i2].selected) {
+          if (questions[i].options[i2].value != 0) {
+            answersHTML += "<li>" + questions[i].options[i2].name + " - " + (questions[i].options[i2].value > 0 ? "increased" : "decreased") + " your greediness by " + Math.abs(questions[i].options[i2].value) + "</li>";
+          } else {
+            answersHTML += "<li>" + questions[i].options[i2].name + " - didn\'t affect your score</li>";
+          }
+        } else answersHTML += "<li>" + questions[i].options[i2].name + "</li>";
+      }
+      questionsHTML += "<div class=\"stat\">";
+      questionsHTML += "<h4>" + questions[i].name + "</h4><ul>" + answersHTML + "</ul>";
+      if (questions[i].why)
+        questionsHTML += "<a onclick=\"document.getElementById(\'why" + questions[i].id + "\').style.display = \'block\';\">Why ask this question?</a><p id=\"why" + questions[i].id + "\" style=\"display: none;\" class=\"smalltext\">" + questions[i].why + "</p>";
+      questionsHTML += "</div>";
+    }
+    greedQuestions.innerHTML = questionsHTML;
+
+    questionContainer.style.display = "none";
+    greedEstimate.style.display = "none";
+    resultContainer.style.display = "block";
+
+    var items = saveResult();
+    if (items) {
+      var greedyCats = [
+        ['Task', 'People That Like Cats']
+      ];
+
+      var greedy = 0;
+      var notGreedy = 0;
+      for (var i = 0; i < items.length; i++) {
+        if (getOptionByName(getQuestionById(items[i].questions, "dogsVsCats").options, "Cats").selected) {
+          if (items[i].greed > totalGreed)
+            greedy++;
+          else notGreedy++;
+        }
+      }
+
+      new google.visualization.PieChart(greedyCatsChart).draw(
+        google.visualization.arrayToDataTable([
+          ['Task', 'People That Like Cats'],
+          ['Greedy', greedy],
+          ['Not Greedy', notGreedy]
+        ]),
+        {
+          "title": "Are people that like cats greedy?",
+          "width": 500,
+          "height": 400
+        }
+      );
+
+      var greedyDogs = [
+        ['Task', 'People That Like Dogs']
+      ];
+
+      greedy = 0;
+      notGreedy = 0;
+      for (var i = 0; i < items.length; i++) {
+        if (getOptionByName(getQuestionById(items[i].questions, "dogsVsCats").options, "Dogs").selected) {
+          if (items[i].greed > totalGreed)
+            greedy++;
+          else notGreedy++;
+        }
+      }
+
+      new google.visualization.PieChart(greedyDogsChart).draw(
+        google.visualization.arrayToDataTable([
+          ['Task', 'People That Like Dogs'],
+          ['Greedy', greedy],
+          ['Not Greedy', notGreedy]
+        ]),
+        {
+          "title": "Are people that like dogs greedy?",
+          "width": 500,
+          "height": 400
+        }
+      );
     }
   }
 
-  for (var i = 0; i < questions.length; i++) {
-    totalGreed += getMaxQuestionGreed(questions[i]);
+  function getQuestionById(questions, id) {
+    for (var i = 0; i < questions.length; i++) {
+      if (questions[i].id == id)
+        return questions[i];
+    }
   }
+
+  function getOptionByName(options, name) {
+    for (var i = 0; i < options.length; i++) {
+      if (options[i].name == name)
+      return options[i];
+    }
+  }
+
   greedTotalRating.innerHTML = totalGreed * 2;
   nextQuestion();
   onGreedChange(fakeGreed);

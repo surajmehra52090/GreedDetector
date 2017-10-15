@@ -1,5 +1,8 @@
 * {
   font-family: 'Miriam Libre', monospace;
+}
+
+:not(.noanim>*) {
   animation-name: fadeIn;
   animation-duration: .3s;
   animation-timing-function: ease-out;
@@ -107,6 +110,10 @@ button:hover {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
   padding: 20px;
   margin: 26px 0;
+}
+
+.chart {
+  display: inline-block;
 }
 
 .smalltext {
