@@ -41,7 +41,7 @@ var questions = [
         "value": 0
       }
     ],
-    "why": "It is a common stereotype for greedy people to like sweet things. While this question doesn\'t affect greediness, I thought it would be interesting to see statistics related to this question."
+    "why": "It is a common stereotype for greedy people to like sweet things. While this question doesn\'t affect greediness, I thought it would be interesting to see related statistics."
   },
   {
     "id": "teacherReccomendations",
