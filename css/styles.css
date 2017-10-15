@@ -23,6 +23,17 @@ header, main {
   margin: 0 calc(10vw + 50px);
 }
 
+a {
+  color: #00C853;
+  transition: color .25s;
+  -moz-transition: color .25s;
+  -webkit-transition: color .25s;
+}
+
+a:hover {
+  color: #000000;
+}
+
 button {
   border: 2px solid #00C853;
   height: 50px;
@@ -90,4 +101,14 @@ button:hover {
 [type="radio"]:checked+label:after {
   opacity: 1;
   transform: scale(1);
+}
+
+.stat {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  margin: 26px 0;
+}
+
+.smalltext {
+  font-size: 0.8em;
 }

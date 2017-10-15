@@ -129,6 +129,7 @@
 
   var questions = [
     {
+      "id": "greed",
       "name": "Do you think that you are greedy?",
       "options": [
         {
@@ -139,9 +140,11 @@
           "name": "No",
           "value": 1
         }
-      ]
+      ],
+      "why": "This attempts to catch people lying by asking a seemingly simple question. If you answered no to this, you were lying; everyone is greedy to some extent, whether by standing in the middle of the hallway talking to friends or just using too much oxygen."
     },
     {
+      "id": "greed1",
       "name": "Are you greedy 2?",
       "options": [
         {
@@ -152,9 +155,11 @@
           "name": "No",
           "value": 1
         }
-      ]
+      ],
+      "why": "yes"
     },
     {
+      "id": "greed2",
       "name": "Are you greedy 13854y?",
       "options": [
         {
@@ -165,7 +170,8 @@
           "name": "No",
           "value": 1
         }
-      ]
+      ],
+      "why": "none"
     }
   ];
 
@@ -202,7 +208,7 @@
         if (greed > totalGreed / 2) {
           greedName.innerHTML = "Ha! Your plans have been foiled, you slave to the unpleasant habitual avarice of humanity.";
         } else {
-          greedName.innerHTML = "Believe it or not, you\'re not actually that greedy. I know, weird, right? It\'s almost like you\'re a decent person or something.";
+          greedName.innerHTML = "Believe it or not, you aren\'t actually that greedy. I know, weird, right? It\'s almost like you\'re a decent person or something.";
         }
 
         var questionsHTML = "";
@@ -217,7 +223,10 @@
               }
             } else answersHTML += "<li>" + questions[i].options[i2].name + "</li>";
           }
-          questionsHTML += "<h4>" + questions[i].name + "</h4><ul>" + answersHTML + "</ul><br>";
+          questionsHTML += "<div class=\"stat\">";
+          questionsHTML += "<h4>" + questions[i].name + "</h4><ul>" + answersHTML + "</ul>";
+          questionsHTML += "<a onclick=\"document.getElementById(\'why" + questions[i].id + "\').style.display = \'block\';\">Why ask this question?</a><p id=\"why" + questions[i].id + "\" style=\"display: none;\" class=\"smalltext\">" + questions[i].why + "</p>";
+          questionsHTML += "</div>";
         }
         greedQuestions.innerHTML = questionsHTML;
 
