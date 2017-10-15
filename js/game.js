@@ -9,7 +9,7 @@ var questions = [
       },
       {
         "name": "No",
-        "value": 1
+        "value": 2
       }
     ],
     "why": "This attempts to catch people lying by asking a seemingly simple question. If you answered no to this, you were lying; everyone is greedy to some extent, whether by standing in the middle of the hallway talking to friends or just using too much oxygen."
@@ -29,19 +29,67 @@ var questions = [
     ]
   },
   {
-    "id": "greed2",
-    "name": "Are you greedy 13854y?",
+    "id": "sweetVsSavoury",
+    "name": "What kind of desserts do you like?",
     "options": [
       {
-        "name": "Yes",
+        "name": "Sweet",
         "value": 0
       },
       {
-        "name": "No",
-        "value": 1
+        "name": "Savoury",
+        "value": 0
       }
     ],
-    "why": "none"
+    "why": "It is a common stereotype for greedy people to like sweet things. While this question doesn\'t affect greediness, I thought it would be interesting to see statistics related to this question."
+  },
+  {
+    "id": "teacherReccomendations",
+    "name": "How long did you wait to ask your teachers for a letter of reccomendation?",
+    "options": [
+      {
+        "name": "Will not need a letter",
+        "value": 0
+      },
+      {
+        "name": "At the start of the year!",
+        "value": -1
+      },
+      {
+        "name": "Two months before the deadline",
+        "value": 0
+      },
+      {
+        "name": "One month before the deadline",
+        "value": 1
+      },
+      {
+        "name": "Two weeks before the deadline",
+        "value": 2
+      },
+      {
+        "name": "Less than a week before the deadline",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "bathroomPass",
+    "name": "About how many times do you use the bathroom pass each day?",
+    "options": [
+      {
+        "name": "Less than 4 times a day",
+        "value": 0
+      },
+      {
+        "name": "4 - 6 times a day",
+        "value": 1
+      },
+      {
+        "name": "More than 6 times a day",
+        "value": 2
+      }
+    ]
   }
 ];
 
