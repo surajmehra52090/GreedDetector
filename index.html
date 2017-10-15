@@ -144,19 +144,18 @@
       "why": "This attempts to catch people lying by asking a seemingly simple question. If you answered no to this, you were lying; everyone is greedy to some extent, whether by standing in the middle of the hallway talking to friends or just using too much oxygen."
     },
     {
-      "id": "greed1",
-      "name": "Are you greedy 2?",
+      "id": "dogsVsCats",
+      "name": "Dogs or cats?",
       "options": [
         {
-          "name": "Yes",
+          "name": "Dogs",
           "value": 0
         },
         {
-          "name": "No",
-          "value": 1
+          "name": "Cats",
+          "value": 0
         }
-      ],
-      "why": "yes"
+      ]
     },
     {
       "id": "greed2",
@@ -172,6 +171,14 @@
         }
       ],
       "why": "none"
+    }
+  ];
+
+  var stats = [
+    {
+      "id": "greed/dogsVsCats",
+      "comparator": "greed",
+      "comparison": "dogsVsCats"
     }
   ];
 
@@ -202,10 +209,10 @@
         setQuestion(questions[index]);
       else {
         question = null;
-        greedRating.innerHTML = greed;
-        greedPercentRating.innerHTML = Math.round((greed / totalGreed) * 100) + "%";
+        greedRating.innerHTML = totalGreed + greed;
+        greedPercentRating.innerHTML = Math.round(((totalGreed + greed) / (2 * totalGreed)) * 100) + "%";
 
-        if (greed > totalGreed / 2) {
+        if (greed > 0) {
           greedName.innerHTML = "Ha! Your plans have been foiled, you slave to the unpleasant habitual avarice of humanity.";
         } else {
           greedName.innerHTML = "Believe it or not, you aren\'t actually that greedy. I know, weird, right? It\'s almost like you\'re a decent person or something.";
@@ -217,7 +224,7 @@
           for (var i2 = 0; i2 < questions[i].options.length; i2++) {
             if (questions[i].options[i2].selected) {
               if (questions[i].options[i2].value != 0) {
-                answersHTML += "<li>" + questions[i].options[i2].name + " - " + (questions[i].options[i2].value > 0 ? "raised" : "lowered") + " your score by " + Math.abs(questions[i].options[i2].value) + "</li>";
+                answersHTML += "<li>" + questions[i].options[i2].name + " - " + (questions[i].options[i2].value > 0 ? "increased" : "decreased") + " your greediness by " + Math.abs(questions[i].options[i2].value) + "</li>";
               } else {
                 answersHTML += "<li>" + questions[i].options[i2].name + " - didn\'t affect your score</li>";
               }
@@ -225,7 +232,8 @@
           }
           questionsHTML += "<div class=\"stat\">";
           questionsHTML += "<h4>" + questions[i].name + "</h4><ul>" + answersHTML + "</ul>";
-          questionsHTML += "<a onclick=\"document.getElementById(\'why" + questions[i].id + "\').style.display = \'block\';\">Why ask this question?</a><p id=\"why" + questions[i].id + "\" style=\"display: none;\" class=\"smalltext\">" + questions[i].why + "</p>";
+          if (questions[i].why)
+            questionsHTML += "<a onclick=\"document.getElementById(\'why" + questions[i].id + "\').style.display = \'block\';\">Why ask this question?</a><p id=\"why" + questions[i].id + "\" style=\"display: none;\" class=\"smalltext\">" + questions[i].why + "</p>";
           questionsHTML += "</div>";
         }
         greedQuestions.innerHTML = questionsHTML;
@@ -233,6 +241,8 @@
         questionContainer.style.display = "none";
         greedEstimate.style.display = "none";
         resultContainer.style.display = "block";
+
+        saveResult();
       }
     } else if (!answer) {
       setQuestion(questions[0]);
@@ -273,10 +283,22 @@
     greedPercentProgress.innerHTML = Math.round(percent) + "%";
   }
 
+  function saveResult() {
+    if (typeof(Storage) !== "undefined" && localStorage) {
+      var items = JSON.parse(localStorage.getItem("items"));
+      if (!items) items = [];
+      items.push({
+        "questions": questions,
+        "greed": totalGreed + greed
+      });
+      localStorage.setItem("items", JSON.stringify(items));
+    }
+  }
+
   for (var i = 0; i < questions.length; i++) {
     totalGreed += getMaxQuestionGreed(questions[i]);
   }
-  greedTotalRating.innerHTML = totalGreed;
+  greedTotalRating.innerHTML = totalGreed * 2;
   nextQuestion();
   onGreedChange(fakeGreed);
   </script>
