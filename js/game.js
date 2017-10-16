@@ -72,7 +72,7 @@ var questions = [
         "value": 3
       }
     ],
-		"why": "Waiting too long before asking a teacher for a reccomendation letter forces them to set aside time for you because you took too much time to ask them."
+		"why": "Waiting too long before asking a teacher for a reccomendation letter forces them to set aside time for you because you took too long to ask them."
   },
   {
     "id": "bathroomPass",
@@ -118,7 +118,7 @@ var questions = [
 	},
 	{
 		"id": "busSeat",
-		"name": "Where do you usually sit on the school bus (or any bus in general)?",
+		"name": "Where do you usually sit on the bus?",
 		"options": [
 			{
 				"name": "I do not ride the bus",
