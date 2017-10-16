@@ -139,7 +139,7 @@
   var greedyDogsChart = document.getElementById("greedyDogsChart");
   var greedySweetChart = document.getElementById("greedySweetChart");
 
-  google.charts.load('current', {'packages':['corechart']});
+  google.charts.load('current', {'packages':['corechart', 'bar']});
 
   function setQuestion(question) {
     this.question = question;
@@ -265,14 +265,21 @@
 
         console.log(data);
 
-        new google.visualization.BarChart(chart).draw(
+        new google.charts.Bar(chart).draw(
           google.visualization.arrayToDataTable(data),
-          {
+          google.charts.Bar.convertOptions({
             "title": "Common Answer Choices",
             "width": 500,
             "height": 400,
-            "colors": ["#00C853", "#00E676"]
-          }
+            "colors": ["#00C853", "#00E676"],
+						"bars": "horizontal",
+						"isStacked": true,
+						"annotations": {
+    					"textStyle": {
+      					"fontName": 'Miriam Libre'
+    					}
+  					}
+          })
         )
       }
     }
