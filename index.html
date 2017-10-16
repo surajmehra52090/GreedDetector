@@ -240,14 +240,9 @@
     if (typeof(Storage) !== "undefined" && localStorage) {
       var items = JSON.parse(localStorage.getItem("items"));
       for (var i = 0; i < questions.length; i++) {
-        console.log(i);
-        var chart = document.getElementById("chart" + questions[i].id);
-        console.log(chart);
         var data = [
           ['Answer', 'Greedy', 'Not Greedy']
         ];
-
-        console.log(data);
 
         for (var i2 = 0; i2 < questions[i].options.length; i2++) {
           var greedyChoices = 0;
@@ -263,14 +258,12 @@
           data.push([questions[i].options[i2].name, greedyChoices, notGreedyChoices]);
         }
 
-        console.log(data);
-
-        new google.charts.Bar(chart).draw(
+        new google.charts.Bar(document.getElementById("chart" + questions[i].id)).draw(
           google.visualization.arrayToDataTable(data),
           google.charts.Bar.convertOptions({
             "title": "Common Answer Choices",
             "width": 500,
-            "height": 400,
+            "height": 80 * data.length,
             "colors": ["#00C853", "#00E676"],
 						"bars": "horizontal",
 						"isStacked": true,

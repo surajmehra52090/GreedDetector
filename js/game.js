@@ -18,12 +18,12 @@ var questions = [
     "id": "dogsVsCats",
     "name": "Dogs or cats?",
     "options": [
-      {
-        "name": "Dogs",
+			{
+        "name": "Cats",
         "value": 0
       },
       {
-        "name": "Cats",
+        "name": "Dogs",
         "value": 0
       }
     ]
