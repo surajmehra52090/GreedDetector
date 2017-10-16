@@ -22,8 +22,13 @@ body {
   background-color: #FAFAFA;
 }
 
-header, main {
-  margin: 0 calc(10vw + 50px);
+main {
+  margin: 20px calc(10vw + 50px);
+}
+
+header {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+	padding: 20px calc(10vw + 50px);
 }
 
 a {
@@ -127,7 +132,7 @@ button:hover {
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-	padding: 0 4px;
+	padding: 8px 4px;
 }
 
 .answerchart {
