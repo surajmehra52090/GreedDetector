@@ -107,6 +107,7 @@
         or <span id="percentRating">infinite percent</span> greediness. Higher scores are worse. Unless you're a
         horrible person, in which case they're better... for you.
       </p>
+			<div id="totalDataChart" class="chart noanim"></div>
       <h2>Statistics</h2>
       <p>These are a few statistics showing general trends among people that have taken this quiz so far.</p>
       <div class="horizontal">
@@ -135,6 +136,7 @@
   var greedTotalRating = document.getElementById("totalRating");
   var greedPercentRating = document.getElementById("percentRating");
   var greedQuestions = document.getElementById("greedQuestions");
+	var totalDataChart = document.getElementById("totalDataChart");
   var greedyCatsChart = document.getElementById("greedyCatsChart");
   var greedyDogsChart = document.getElementById("greedyDogsChart");
   var greedySweetChart = document.getElementById("greedySweetChart");
@@ -200,6 +202,28 @@
 
     var items = saveResult();
     if (items) {
+			var firstHalfEndpoint = 0;
+			var firstHalfMedian = 0;
+			var secondHalfMedian = 0;
+			var secondHalfEndpoint = 0;
+
+			items.sort(function(item1, item2) {
+				return item1.greed - item2.greed;
+			})
+
+			firstHalfEndpoint = items[0].greed;
+			firstHalfMedian = items[(items.length / 4) | 0].greed;
+			secondHalfMedian = items[(3 * items.length / 4) | 0].greed;
+			secondHalfEndpoint = items[items.length - 1].greed;
+
+			new google.visualization.CandlestickChart(totalDataChart).draw(
+				google.visualization.arrayToDataTable([["Scores", firstHalfEndpoint, firstHalfMedian, secondHalfMedian, secondHalfEndpoint]], true),
+				{
+					"legend": "none",
+      		"orientation": "vertical"
+				}
+			);
+
       addGreedyPreferenceChart(items, "dogsVsCats", null, greedyCatsChart);
       addGreedyPreferenceChart(items, "sweetVsSavoury", "sweet things", greedySweetChart);
       setupQuestionCharts();
