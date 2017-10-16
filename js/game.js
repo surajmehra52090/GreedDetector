@@ -71,7 +71,8 @@ var questions = [
         "name": "Less than a week before the deadline",
         "value": 3
       }
-    ]
+    ],
+		"why": "Waiting too long before asking a teacher for a reccomendation letter forces them to set aside time for you because you took too much time to ask them."
   },
   {
     "id": "bathroomPass",
@@ -89,8 +90,93 @@ var questions = [
         "name": "More than 6 times a day",
         "value": 2
       }
-    ]
-  }
+    ],
+		"why": "Taking the bathroom pass unnecessarily prevents other people from using it when they need to."
+  },
+	{
+		"id": "waterFountain",
+		"name": "How long do you spend drinking from the water fountain?",
+		"options": [
+			{
+				"name": "Do not use water fountains",
+				"value": 0
+			},
+			{
+				"name": "Less than 3 seconds",
+				"value": 1
+			},
+			{
+				"name": "3-10 seconds",
+				"value": 2
+			},
+			{
+				"name": "More than 10 seconds",
+				"value": 3
+			}
+		],
+		"why": "By using the water fountain for a long period of time, you are not only wasting clean water but also sometimes preventing other people from using it."
+	},
+	{
+		"id": "busSeat",
+		"name": "Where do you usually sit on the school bus (or any bus in general)?",
+		"options": [
+			{
+				"name": "I do not ride the bus",
+				"value": 0,
+			},
+			{
+				"name": "Near the front",
+				"value": 1
+			},
+			{
+				"name": "In the middle",
+				"value": 0
+			},
+			{
+				"name": "In the back",
+				"value": -1
+			}
+		],
+		"why": "Other people might need to sit in the front of the bus for convenience or ease of access."
+	},
+	{
+		"id": "money",
+		"name": "Do you normally spend your money as soon as you get it or save it up without intending to buy anything specific?",
+		"options": [
+			{
+				"name": "Spend it",
+				"value": -1
+			},
+			{
+				"name": "Save it up",
+				"value": 1
+			},
+			{
+				"name": "Saving up for something specific",
+				"value": 0
+			}
+		],
+		"why": "Spending your money as soon as you get it gives the economy an immediate gain from your profits, while saving it up removes that value from use."
+	},
+	{
+		"id": "businesses",
+		"name": "Do you normally shop at local businesses or large company stores?",
+		"options": [
+			{
+				"name": "Local businesses",
+				"value": -1
+			},
+			{
+				"name": "Large companies",
+				"value": 1
+			},
+			{
+				"name": "Both",
+				"value": 0
+			}
+		],
+		"why": "Spending your money at local businesses helps to improve the neighborhood community you live in, providing a better living experience for yourself and others."
+	}
 ];
 
 var greed = 0;
