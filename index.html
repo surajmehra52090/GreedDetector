@@ -200,37 +200,37 @@
 
     var items = saveResult();
     if (items) {
-      addGreedyPreferenceChart(items, "dogsVsCats", "Cats", null, greedyCatsChart);
-      addGreedyPreferenceChart(items, "dogsVsCats", "Dogs", null, greedyDogsChart);
-      addGreedyPreferenceChart(items, "sweetVsSavoury", "Sweet", "sweet things", greedySweetChart);
+      addGreedyPreferenceChart(items, "dogsVsCats", null, greedyCatsChart);
+      addGreedyPreferenceChart(items, "sweetVsSavoury", "sweet things", greedySweetChart);
       setupQuestionCharts();
     }
   }
 
-  function addGreedyPreferenceChart(items, questionId, optionName, displayOptionName, element) {
-    var greedy = 0;
-    var notGreedy = 0;
-    for (var i = 0; i < items.length; i++) {
-      if (getOptionByName(getQuestionById(items[i].questions, questionId).options, optionName).selected) {
-        if (items[i].greed > totalGreed)
-          greedy++;
-        else notGreedy++;
-      }
-    }
+  function addGreedyPreferenceChart(items, questionId, displayOptionName, element) {
+    var question = getQuestionById(questions, questionId);
+		var data = [
+			["Answer", "Choices"]
+		];
+
+		for (var i = 0; i < question.options.length; i++) {
+			var choices = 0;
+			for (var i2 = 0; i2 < items.length; i2++) {
+				if (items[i2].greed > totalGreed && getOptionByName(getQuestionById(items[i2].questions, questionId).options, question.options[i].name).selected)
+					choices++;
+			}
+
+			data.push([question.options[i].name, choices]);
+		}
 
     if (!displayOptionName)
-      displayOptionName = optionName.toLowerCase();
+      displayOptionName = question.options[0].name.toLowerCase();
 
     new google.visualization.PieChart(element).draw(
-      google.visualization.arrayToDataTable([
-        ['Greediness', 'People That Like ' + optionName],
-        ['Greedy', greedy],
-        ['Not Greedy', notGreedy]
-      ]),
+      google.visualization.arrayToDataTable(data),
       {
-        "title": Math.random() > 0.5 ? "Are people that like " + displayOptionName + " greedy?" : "Do greedy people like " + displayOptionName + "?",
-        "width": 500,
-        "height": 400,
+        "title": "Do greedy people like " + displayOptionName + "?",
+        "width": 400,
+        "height": 300,
         "colors": ["#00C853", "#00E676", "#69F0AE"]
       }
     );
@@ -244,19 +244,23 @@
         var chart = document.getElementById("chart" + questions[i].id);
         console.log(chart);
         var data = [
-          ['Answer', 'Choices']
+          ['Answer', 'Greedy', 'Not Greedy']
         ];
 
         console.log(data);
 
         for (var i2 = 0; i2 < questions[i].options.length; i2++) {
-          var choices = 0;
+          var greedyChoices = 0;
+					var notGreedyChoices = 0;
           for (var i3 = 0; i3 < items.length; i3++) {
-            if (getOptionByName(getQuestionById(items[i3].questions, questions[i].id).options, questions[i].options[i2].name).selected)
-              choices++;
+            if (getOptionByName(getQuestionById(items[i3].questions, questions[i].id).options, questions[i].options[i2].name).selected) {
+							if (items[i3].greed > totalGreed)
+								greedyChoices++;
+							else notGreedyChoices++;
+						}
           }
 
-          data.push([questions[i].options[i2].name, choices]);
+          data.push([questions[i].options[i2].name, greedyChoices, notGreedyChoices]);
         }
 
         console.log(data);
@@ -267,8 +271,7 @@
             "title": "Common Answer Choices",
             "width": 500,
             "height": 400,
-            "legend": { "position": "none" },
-            "colors": ["#00C853"]
+            "colors": ["#00C853", "#00E676"]
           }
         )
       }
