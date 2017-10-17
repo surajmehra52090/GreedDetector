@@ -270,7 +270,7 @@
       var items = JSON.parse(localStorage.getItem("items"));
       for (var i = 0; i < questions.length; i++) {
         var data = [
-          ['Answers', 'Greedy', 'Not Greedy', "You (" + (questions.indexOf(question) == questions.length - 1 ? (greed > 0 ? "Greedy" : "Not Greedy") : "Unspecified") + ")"]
+          ['Answers', 'Greedy', 'Not Greedy', "You"]
         ];
 
         for (var i2 = 0; i2 < questions[i].options.length; i2++) {
@@ -287,9 +287,9 @@
           }
 
           if (questions[i].options[i2].selected) {
-            if (greed > totalGreed)
+            if (greed > totalGreed && greedyChoices > 0)
               greedyChoices--;
-            else notGreedyChoices--;
+            else if (notGreedyChoices > 0) notGreedyChoices--;
 
             youChoices++;
           }
