@@ -222,6 +222,7 @@ function nextQuestion() {
     fakeGreed -= answer.value;
     answer.selected = true;
     answer = null;
+
     var index = questions.indexOf(question) + 1;
     if (index < questions.length)
       setQuestion(questions[index]);
