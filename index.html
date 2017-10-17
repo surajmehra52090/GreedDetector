@@ -316,13 +316,8 @@
 							}
 	          }
 
-	          if (questions[i].options[i2].selected) {
-	            if (greed > totalGreed && greedyChoices > 0)
-	              greedyChoices--;
-	            else if (notGreedyChoices > 0) notGreedyChoices--;
-
+	          if (questions[i].options[i2].selected)
 	            youChoices++;
-	          }
 
 	          data.push([questions[i].options[i2].name, greedyChoices, notGreedyChoices, youChoices]);
 	        }
