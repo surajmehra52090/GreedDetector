@@ -249,10 +249,20 @@
     greedPercentProgress.innerHTML = Math.round(percent) + "%";
   }
 
-  function onFinish() {
-    saveResult();
-    showStats();
-  }
+	function onFinish(snapshot) {
+		if (snapshot) {
+				var items = snapshot.val();
+				if (!items)
+					items = [];
+
+				items.push({
+			    "questions": questions,
+			    "greed": totalGreed + greed
+			  });
+
+				firebase.database().ref("items").set(items).then(showStats);
+		} else getStats(onFinish);
+	}
 
   function addGreedyPreferenceChart(items, questionId, displayOptionName, element) {
     var question = getQuestionById(questions, questionId);
@@ -337,23 +347,8 @@
 		} else getStats(setupQuestionCharts);
   }
 
-	function saveResult(snapshot) {
-		if (snapshot) {
-				var items = snapshot.val();
-				if (!items)
-					items = [];
-
-				items.push({
-			    "questions": questions,
-			    "greed": totalGreed + greed
-			  });
-
-				firebase.database().ref("items").set(items);
-		} else getStats(saveResult);
-	}
-
 	greedTotalRating.innerHTML = totalGreed * 2;
-	
+
 	nextQuestion();
 	onGreedChange(fakeGreed);
   </script>
