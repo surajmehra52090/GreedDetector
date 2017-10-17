@@ -176,6 +176,37 @@ var questions = [
 			}
 		],
 		"why": "Spending your money at local businesses helps to improve the neighborhood community you live in, providing a better living experience for yourself and others."
+	},
+	{
+		"id": "transportation",
+		"name": "When traveling for any reason, what is your usual mode of transportation?",
+		"options": [
+			{
+				"name": "Bus",
+				"value": -2
+			},
+			{
+				"name": "Car (with two or more passengers)",
+				"value": -1
+			},
+			{
+				"name": "Car (by yourself)",
+				"value": 2
+			},
+			{
+				"name": "Bike",
+				"value": -1
+			},
+			{
+				"name": "Walking",
+				"value": -2
+			},
+			{
+				"name": "Other",
+				"value": 0
+			}
+		],
+		"why": "Carpooling with others or taking a bus saves energy and helps the environment."
 	}
 ];
 
@@ -236,6 +267,20 @@ function saveResult() {
 
     return items;
   } else return null;
+}
+
+function getQuestionById(questions, id) {
+	for (var i = 0; i < questions.length; i++) {
+		if (questions[i].id == id)
+			return questions[i];
+	}
+}
+
+function getOptionByName(options, name) {
+	for (var i = 0; i < options.length; i++) {
+		if (options[i].name == name)
+		return options[i];
+	}
 }
 
 for (var i = 0; i < questions.length; i++) {

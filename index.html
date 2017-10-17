@@ -166,10 +166,10 @@
     var questionsHTML = "";
     for (var i = 0; i < questions.length; i++) {
       questionsHTML += "<div class=\"stat\">";
-      questionsHTML += "<h4>" + questions[i].name + "</h4>";
+      questionsHTML += "<h3>" + questions[i].name + "</h3>";
       questionsHTML += "<div id=\"chart" + questions[i].id + "\" class=\"answerchart\"></div>"
       if (questions[i].why)
-        questionsHTML += "<a onclick=\"document.getElementById(\'why" + questions[i].id + "\').style.display = \'block\';\">Why ask this question?</a><p id=\"why" + questions[i].id + "\" style=\"display: none;\" class=\"smalltext\">" + questions[i].why + "</p>";
+        questionsHTML += "<h4>Why ask this question?</h4><p class=\"smalltext\">" + questions[i].why + "</p>";
       questionsHTML += "</div>";
     }
     greedQuestions.innerHTML = questionsHTML;
@@ -313,52 +313,6 @@
           })
         )
       }
-    }
-  }
-
-  /*function addPreferenceGreedyChart(items, questionId, element) {
-    var options = getQuestionById(items[0].questions, questionId).options;
-    var array = [
-      ['Task', 'Do Greedy People Like ' + options[0].name]
-    ]
-
-    for (var i = 0; i < options.length; i++) {
-      array.push([options[i].name, 0]);
-    }
-
-    for (var i = 0; i < items.length; i++) {
-      if (items[i].greed > totalGreed) {
-        var question = getQuestionById(items[i].questions, questionId);
-        for (var i2 = 0; i2 < question.options.length; i2++) {
-          if (question.options[i2].selected) {
-            array[i2][1]++;
-            break;
-          }
-        }
-      }
-    }
-
-    new google.visualization.PieChart(element).draw(
-      google.visualization.arrayToDataTable(array),
-      {
-        "title": "Do greedy people like " + options[0].name.toLowerCase() + "?",
-        "width": 500,
-        "height": 400
-      }
-    );
-  }*/ //TODO: doesn't work, fix later
-
-  function getQuestionById(questions, id) {
-    for (var i = 0; i < questions.length; i++) {
-      if (questions[i].id == id)
-        return questions[i];
-    }
-  }
-
-  function getOptionByName(options, name) {
-    for (var i = 0; i < options.length; i++) {
-      if (options[i].name == name)
-      return options[i];
     }
   }
 
