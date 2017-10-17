@@ -129,6 +129,23 @@
 
   <script src="js/game.js"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
+	<script>
+  	var config = {
+			apiKey: "AIzaSyAefJOsutZaOQM2m7KPUCAVTOoFjScW--w",
+    	authDomain: "greed-detector.firebaseapp.com",
+    	databaseURL: "https://greed-detector.firebaseio.com",
+    	projectId: "greed-detector",
+    	storageBucket: "",
+    	messagingSenderId: "1098274140225"
+  	};
+  	firebase.initializeApp(config);
+
+		function getStats(then) {
+			firebase.database().ref("items").once("value").then(then);
+		}
+	</script>
+
   <script type="text/javascript">
   var greedEstimate = document.getElementById("greedEstimate");
   var greedProgress = document.getElementById("progressFg");
@@ -151,37 +168,11 @@
 
   google.charts.load('current', {'packages':['corechart', 'bar']});
 
-  function showStats() {
-    if (question && questions.indexOf(question) == questions.length - 1) {
-      greedRating.innerHTML = totalGreed + greed;
-      greedPercentRating.innerHTML = Math.round(((totalGreed + greed) / (2 * totalGreed)) * 100) + "%";
-
-      if (greed > 0) {
-        greedName.innerHTML = "Ha! Your plans have been foiled, you slave to the unpleasant habitual avarice of humanity.";
-      } else {
-        greedName.innerHTML = "Believe it or not, you aren\'t actually that greedy. I know, weird, right? It\'s almost like you\'re a decent person or something.";
-      }
-    } else specificResults.style.display = "none";
-
-    var questionsHTML = "";
-    for (var i = 0; i < questions.length; i++) {
-      questionsHTML += "<div class=\"stat\">";
-      questionsHTML += "<h3>" + questions[i].name + "</h3>";
-      questionsHTML += "<div id=\"chart" + questions[i].id + "\" class=\"answerchart\"></div>"
-      if (questions[i].why)
-        questionsHTML += "<h4>Why ask this question?</h4><p class=\"smalltext\">" + questions[i].why + "</p>";
-      questionsHTML += "</div>";
-    }
-    greedQuestions.innerHTML = questionsHTML;
-
-    questionContainer.style.display = "none";
-    greedEstimate.style.display = "none";
-    resultContainer.style.display = "block";
-
-    if (typeof(Storage) !== "undefined" && localStorage) {
-      var items = JSON.parse(localStorage.getItem("items"));
-      if (items) {
-        var firstHalfEndpoint = 0;
+  function showStats(snapshot) {
+		if (snapshot) {
+			var items = snapshot.val();
+			if (items) {
+				var firstHalfEndpoint = 0;
   			var firstHalfMedian = 0;
   			var secondHalfMedian = 0;
   			var secondHalfEndpoint = 0;
@@ -207,8 +198,36 @@
         addGreedyPreferenceChart(items, "dogsVsCats", null, greedyCatsChart);
         addGreedyPreferenceChart(items, "sweetVsSavoury", "sweet things", greedySweetChart);
         setupQuestionCharts();
-      }
-    }
+			}
+		} else {
+			if (question && questions.indexOf(question) == questions.length - 1) {
+	      greedRating.innerHTML = totalGreed + greed;
+	      greedPercentRating.innerHTML = Math.round(((totalGreed + greed) / (2 * totalGreed)) * 100) + "%";
+
+	      if (greed > 0) {
+	        greedName.innerHTML = "Ha! Your plans have been foiled, you slave to the unpleasant habitual avarice of humanity.";
+	      } else {
+	        greedName.innerHTML = "Believe it or not, you aren\'t actually that greedy. I know, weird, right? It\'s almost like you\'re a decent person or something.";
+	      }
+	    } else specificResults.style.display = "none";
+
+	    var questionsHTML = "";
+	    for (var i = 0; i < questions.length; i++) {
+	      questionsHTML += "<div class=\"stat\">";
+	      questionsHTML += "<h3>" + questions[i].name + "</h3>";
+	      questionsHTML += "<div id=\"chart" + questions[i].id + "\" class=\"answerchart\"></div>"
+	      if (questions[i].why)
+	        questionsHTML += "<h4>Why ask this question?</h4><p class=\"smalltext\">" + questions[i].why + "</p>";
+	      questionsHTML += "</div>";
+	    }
+	    greedQuestions.innerHTML = questionsHTML;
+
+	    questionContainer.style.display = "none";
+	    greedEstimate.style.display = "none";
+	    resultContainer.style.display = "block";
+
+			getStats(showStats);
+		}
   }
 
   function setQuestion(question) {
@@ -265,60 +284,77 @@
     );
   }
 
-  function setupQuestionCharts() {
-    if (typeof(Storage) !== "undefined" && localStorage) {
-      var items = JSON.parse(localStorage.getItem("items"));
-      for (var i = 0; i < questions.length; i++) {
-        var data = [
-          ['Answers', 'Greedy', 'Not Greedy', "You"]
-        ];
+  function setupQuestionCharts(snapshot) {
+		if (snapshot) {
+			var items = snapshot.val();
+			if (items) {
+				for (var i = 0; i < questions.length; i++) {
+	        var data = [
+	          ['Answers', 'Greedy', 'Not Greedy', "You"]
+	        ];
 
-        for (var i2 = 0; i2 < questions[i].options.length; i2++) {
-          var greedyChoices = 0;
-					var notGreedyChoices = 0;
-          var youChoices = 0;
-          for (var i3 = 0; i3 < items.length; i3++) {
-            var question = getQuestionById(items[i3].questions, questions[i].id);
-            if (question && getOptionByName(question.options, questions[i].options[i2].name).selected) {
-							if (items[i3].greed > totalGreed)
-								greedyChoices++;
-							else notGreedyChoices++;
-						}
-          }
+	        for (var i2 = 0; i2 < questions[i].options.length; i2++) {
+	          var greedyChoices = 0;
+						var notGreedyChoices = 0;
+	          var youChoices = 0;
+	          for (var i3 = 0; i3 < items.length; i3++) {
+	            var question = getQuestionById(items[i3].questions, questions[i].id);
+	            if (question && getOptionByName(question.options, questions[i].options[i2].name).selected) {
+								if (items[i3].greed > totalGreed)
+									greedyChoices++;
+								else notGreedyChoices++;
+							}
+	          }
 
-          if (questions[i].options[i2].selected) {
-            if (greed > totalGreed && greedyChoices > 0)
-              greedyChoices--;
-            else if (notGreedyChoices > 0) notGreedyChoices--;
+	          if (questions[i].options[i2].selected) {
+	            if (greed > totalGreed && greedyChoices > 0)
+	              greedyChoices--;
+	            else if (notGreedyChoices > 0) notGreedyChoices--;
 
-            youChoices++;
-          }
+	            youChoices++;
+	          }
 
-          data.push([questions[i].options[i2].name, greedyChoices, notGreedyChoices, youChoices]);
-        }
+	          data.push([questions[i].options[i2].name, greedyChoices, notGreedyChoices, youChoices]);
+	        }
 
-        new google.charts.Bar(document.getElementById("chart" + questions[i].id)).draw(
-          google.visualization.arrayToDataTable(data),
-          google.charts.Bar.convertOptions({
-            "width": "100%",
-            "height": 80 * data.length,
-            "colors": ["#00C853", "#00E676", "#000000"],
-						"bars": "horizontal",
-						"isStacked": true,
-						"annotations": {
-    					"textStyle": {
-      					"fontName": 'Miriam Libre'
-    					}
-  					}
-          })
-        )
-      }
-    }
+	        new google.charts.Bar(document.getElementById("chart" + questions[i].id)).draw(
+	          google.visualization.arrayToDataTable(data),
+	          google.charts.Bar.convertOptions({
+	            "width": "100%",
+	            "height": 80 * data.length,
+	            "colors": ["#00C853", "#00E676", "#000000"],
+							"bars": "horizontal",
+							"isStacked": true,
+							"annotations": {
+	    					"textStyle": {
+	      					"fontName": 'Miriam Libre'
+	    					}
+	  					}
+	          })
+	        )
+	      }
+			}
+		} else getStats(setupQuestionCharts);
   }
 
-  greedTotalRating.innerHTML = totalGreed * 2;
-  nextQuestion();
-  onGreedChange(fakeGreed);
+	function saveResult(snapshot) {
+		if (snapshot) {
+				var items = snapshot.val();
+				if (!items)
+					items = [];
+
+				items.push({
+			    "questions": questions,
+			    "greed": totalGreed + greed
+			  });
+
+				firebase.database().ref("items").set(items);
+		} else getStats(saveResult);
+	}
+
+	greedTotalRating.innerHTML = totalGreed * 2;
+	nextQuestion();
+	onGreedChange(fakeGreed);
   </script>
 </body>
 </html>

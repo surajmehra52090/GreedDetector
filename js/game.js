@@ -255,20 +255,6 @@ function setAnswer(name) {
   onGreedChange(fakeGreed - answer.value);
 }
 
-function saveResult() {
-  if (typeof(Storage) !== "undefined" && localStorage) {
-    var items = JSON.parse(localStorage.getItem("items"));
-    if (!items) items = [];
-    items.push({
-      "questions": questions,
-      "greed": totalGreed + greed
-    });
-    localStorage.setItem("items", JSON.stringify(items));
-
-    return items;
-  } else return null;
-}
-
 function getQuestionById(questions, id) {
 	for (var i = 0; i < questions.length; i++) {
 		if (questions[i].id == id)
