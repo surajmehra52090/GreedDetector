@@ -252,11 +252,6 @@ function getAnswer(name) {
   }
 }
 
-function setAnswer(name) {
-  answer = getAnswer(name);
-  onGreedChange(fakeGreed - answer.value);
-}
-
 function getQuestionById(questions, id) {
 	for (var i = 0; i < questions.length; i++) {
 		if (questions[i].id == id)

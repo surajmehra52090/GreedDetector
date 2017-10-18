@@ -100,7 +100,7 @@
       <button id="next" onclick="nextQuestion();">NEXT</button>
       <br>
       <br>
-      <a href="javascript:showStats()">Statistics</a>
+      <a id="showStats" href="javascript:showStats()">Statistics</a>
     </div>
     <div id="results" style="display: none;">
       <button id="retake" onclick="location.reload();">RE-TAKE QUIZ</button>
@@ -245,8 +245,16 @@
     }
     answerContainer.innerHTML = answers;
 
-    document.getElementById(question.options[0].name).click(); //kinda hacky but eh who cares
+		nextButton.style.display = "none";
+		if (questions.indexOf(question) > 0)
+			document.getElementById("showStats").style.display = "none";
   }
+
+	function setAnswer(name) {
+	  answer = getAnswer(name);
+	  onGreedChange(fakeGreed - answer.value);
+		nextButton.style.display = "block";
+	}
 
   function onGreedChange(greed) {
     var percent = ((totalGreed + greed) / (2 * totalGreed)) * 100;
