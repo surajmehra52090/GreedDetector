@@ -15,37 +15,8 @@ var questions = [
     "why": "This attempts to catch people lying by asking a seemingly simple question. If you answered no to this, you were lying; everyone is greedy to some extent, whether by standing in the middle of the hallway talking to friends or just using too much oxygen."
   },
   {
-    "id": "dogsVsCats",
-    "name": "Dogs or cats?",
-    "options": [
-			{
-        "name": "Cats",
-        "value": 0
-      },
-      {
-        "name": "Dogs",
-        "value": 0
-      }
-    ]
-  },
-  {
-    "id": "sweetVsSavoury",
-    "name": "What kind of desserts do you like?",
-    "options": [
-      {
-        "name": "Sweet",
-        "value": 0
-      },
-      {
-        "name": "Savoury",
-        "value": 0
-      }
-    ],
-    "why": "It is a common stereotype for greedy people to like sweet things. While this question doesn\'t affect greediness, I thought it would be interesting to see related statistics."
-  },
-  {
-    "id": "teacherReccomendations",
-    "name": "How long did you wait to ask your teachers for a letter of reccomendation?",
+    "id": "teacherReccomendations", //yes, that's a typo. no, I don't care.
+    "name": "How long did you wait to ask your teachers for a letter of recommendation?",
     "options": [
       {
         "name": "Will not need a letter",
@@ -72,7 +43,7 @@ var questions = [
         "value": 3
       }
     ],
-		"why": "Waiting too long before asking a teacher for a reccomendation letter forces them to set aside time for you because you took too long to ask them."
+		"why": "Waiting too long before asking a teacher for a recommendation letter forces them to set aside time for you because you took too long to ask them."
   },
   {
     "id": "bathroomPass",
@@ -156,7 +127,7 @@ var questions = [
 				"value": 0
 			}
 		],
-		"why": "Spending your money as soon as you get it gives the economy an immediate gain from your profits, while saving it up removes that value from use."
+		"why": "Spending your money as soon as you get it gives the economy an immediate gain from your profits, while saving it up removes that value from use until you see fit."
 	},
 	{
 		"id": "businesses",
@@ -206,8 +177,38 @@ var questions = [
 				"value": 0
 			}
 		],
-		"why": "Carpooling with others or taking a bus saves energy and helps the environment."
-	}
+		"why": "Carpooling with others or taking a bus saves energy and helps the environment. Not doing so wastes clean air and demonstrates your greed for fast transportation."
+	},
+  {
+    "id": "dogsVsCats",
+    "name": "Dogs or cats?",
+    "options": [
+			{
+        "name": "Cats",
+        "value": 0
+      },
+      {
+        "name": "Dogs",
+        "value": 0
+      }
+    ],
+    "why": "Cats are obviously far better than dogs. Anyone that says otherwise is a materialistic dullard. (this question doesn\'t affect your score, it\'s just for statistics)"
+  },
+  {
+    "id": "sweetVsSavoury",
+    "name": "What kind of desserts do you like?",
+    "options": [
+      {
+        "name": "Sweet",
+        "value": 0
+      },
+      {
+        "name": "Savoury",
+        "value": 0
+      }
+    ],
+    "why": "It is a common stereotype for greedy people to like sweet things. While this question doesn\'t affect greediness, I thought it would be interesting to see related statistics."
+  }
 ];
 
 var greed = 0;
