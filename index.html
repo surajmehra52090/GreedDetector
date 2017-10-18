@@ -114,7 +114,7 @@
         </p>
       </div>
       <h2>Statistics</h2>
-      <p>These are a few statistics showing general trends among people that have taken this quiz so far.</p>
+      <p>These are a few statistics showing general trends among everyone else that has taken this survey. So far, this website has collected results from <span id="peopleThatHaveTakenTheQuizSoFar">SIX HUNDRED AND SIXTY SIX</span> people.</p>
       <h3>Average Scores</h3>
 			<div class="horizontal">
 				<div id="totalDataChart" class="chart noanim"></div>
@@ -157,6 +157,7 @@
   var answerContainer = document.getElementById("answers");
   var nextButton = document.getElementById("next");
   var resultContainer = document.getElementById("results");
+  var peopleThatHaveTakenTheQuizSoFar = document.getElementById("peopleThatHaveTakenTheQuizSoFar");
   var greedName = document.getElementById("greedyboii");
   var greedRating = document.getElementById("rating");
   var greedTotalRating = document.getElementById("totalRating");
@@ -174,6 +175,8 @@
 		if (snapshot) {
 			var items = snapshot.val();
 			if (items) {
+        peopleThatHaveTakenTheQuizSoFar.innerHTML = items.length;
+
 				var firstHalfEndpoint = 0;
   			var firstHalfMedian = 0;
   			var secondHalfMedian = 0;
