@@ -279,7 +279,10 @@
 			  });
 
 				firebase.database().ref("items").set(items).then(showStats);
-		} else getStats(onFinish);
+		} else {
+      questionContainer.style.display = "none";
+      getStats(onFinish);
+    }
 	}
 
   function addGreedyPreferenceChart(items, questionId, displayOptionName, element) {
