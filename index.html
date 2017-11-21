@@ -118,19 +118,24 @@
           the survey.
         </p>
       </div>
-      <h2>Statistics</h2>
-      <p>These are a few statistics showing general trends among everyone else that has taken this survey. So far, this website has collected results from <span id="peopleThatHaveTakenTheQuizSoFar">SIX HUNDRED AND SIXTY SIX</span> people.</p>
-      <h3>Average Scores</h3>
-			<div class="horizontal">
-				<div id="totalDataChart" class="chart noanim"></div>
-			</div>
-      <h3>Random Trends</h3>
-      <div class="horizontal">
-        <div id="greedyCatsChart" class="chart noanim"></div>
-        <div id="greedySweetChart" class="chart noanim"></div>
+      <div id="loading">
+        <p style="text-align: center;">There is stuff here, but it hasn't loaded yet. Give it a moment. Any time now. It'll happen soon, I promise.</p>
       </div>
-      <h3>Questions</h3>
-      <div id="greedQuestions"></div>
+      <div id="loaded" style="display: none;">
+        <h2>Statistics</h2>
+        <p>These are a few statistics showing general trends among everyone else that has taken this survey. So far, this website has collected results from <span id="peopleThatHaveTakenTheQuizSoFar">SIX HUNDRED AND SIXTY SIX</span> people.</p>
+        <h3>Average Scores</h3>
+			  <div class="horizontal">
+				  <div id="totalDataChart" class="chart noanim"></div>
+			  </div>
+        <h3>Random Trends</h3>
+        <div class="horizontal">
+          <div id="greedyCatsChart" class="chart noanim"></div>
+          <div id="greedySweetChart" class="chart noanim"></div>
+        </div>
+        <h3>Questions</h3>
+        <div id="greedQuestions"></div>
+      </div>
     </div>
   </main>
 
@@ -173,6 +178,8 @@
   var greedyCatsChart = document.getElementById("greedyCatsChart");
   var greedyDogsChart = document.getElementById("greedyDogsChart");
   var greedySweetChart = document.getElementById("greedySweetChart");
+  var loadingScores = document.getElementById("loading");
+  var loadedScores = document.getElementById("loaded");
 
   google.charts.load('current', {'packages':['corechart', 'bar']});
 
@@ -180,6 +187,9 @@
 		if (snapshot) {
 			var items = snapshot.val();
 			if (items) {
+        loadingScores.style.display = "none";
+        loadedScores.style.display = "block";
+
         peopleThatHaveTakenTheQuizSoFar.innerHTML = items.length;
 
 				var firstHalfEndpoint = 0;
